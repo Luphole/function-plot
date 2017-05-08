@@ -5,30 +5,43 @@ $(document).on('markupLoaded', function () {
 
   functionPlot({
     target: '#description-sample',
-    yAxis: {domain: [-1, 9]},
-    tip: {
-      renderer: function () {
-      }
-    },
+    xAxis: {domain: [-2 * Math.PI, 2 * Math.PI]},
     grid: true,
+    disableZoom: true,
     data: [{
-      fn: 'x^2',
-      derivative: {
-        fn: '2 * x',
-        updateOnMouseMove: true
-      }
+      fn: 'sin(x)',
+      range: [-2 * Math.PI, 2 * Math.PI]
     }]
   }).on('after:draw', function (event, data) {
     var svg = $(this.root[0][0]);
 
     var xOrigin = $(svg).find('path.x.origin')[0];
-    var xOriginTop = xOrigin.getBoundingClientRect().top;
+    var xOriginPosition = xOrigin.getBoundingClientRect();
+    var xOriginTop = xOriginPosition.top;
 
     var yOrigin = $(svg).find('path.y.origin')[0];
-    var yOriginLeft = yOrigin.getBoundingClientRect().left;
+    var yOriginPosition = yOrigin.getBoundingClientRect();
+    var yOriginLeft = yOriginPosition.left;
 
     var xAxisTicks = $(svg).find('g.x.axis .tick text');
     var yAxisTicks = $(svg).find('g.y.axis .tick text');
+
+    var yArrow = $(svg).find('.y.arrow')[0];
+    var xArrow = $(svg).find('.x.arrow')[0];
+
+    $(yArrow).attr('transform', 'translate(0,0)');
+    $(xArrow).attr('transform', 'translate(0,0)');
+
+    var yArrowPosition = yArrow.getBoundingClientRect();
+    var xArrowPosition = xArrow.getBoundingClientRect();
+
+    var yArrowRightDiff = yOriginPosition.right - yArrowPosition.right;
+    var yArrowTopDiff = yOriginPosition.top - yArrowPosition.top;
+    var xArrowRightDiff = xOriginPosition.right - xArrowPosition.right;
+    var xArrowTopDiff = xOriginPosition.top - xArrowPosition.top;
+
+    $(yArrow).attr('transform', 'translate(' + (yArrowRightDiff + 6) + ',' + yArrowTopDiff + ')');
+    $(xArrow).attr('transform', 'translate(' + xArrowRightDiff + ',' + (xArrowTopDiff - 6) + ') rotate(90)');
 
     for (var index in xAxisTicks) {
       var xAxisTick = xAxisTicks[index];
@@ -48,8 +61,8 @@ $(document).on('markupLoaded', function () {
 
     for (var index in yAxisTicks) {
       var yAxisTick = yAxisTicks[index];
-      if(yAxisTick.textContent == '0'){
-        $(yAxisTick).css('display','none');
+      if (yAxisTick.textContent == '0') {
+        $(yAxisTick).css('display', 'none');
       } else if (typeof yAxisTick.getBoundingClientRect == 'function' && yAxisTick.tagName == 'text') {
         $(yAxisTick).attr('transform', 'translate(0,0)');
         var tickLeft = yAxisTick.getBoundingClientRect().left;
@@ -272,7 +285,7 @@ $(document).on('markupLoaded', function () {
       fn: '1',
       range: [2, 8],
       closed: -100
-    },{
+    }, {
       fn: '2',
       range: [1, 5],
       closed: -100,
