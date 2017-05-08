@@ -7,7 +7,8 @@ $(document).on('markupLoaded', function () {
     target: '#description-sample',
     yAxis: {domain: [-1, 9]},
     tip: {
-      renderer: function () {}
+      renderer: function () {
+      }
     },
     grid: true,
     data: [{
@@ -17,14 +18,60 @@ $(document).on('markupLoaded', function () {
         updateOnMouseMove: true
       }
     }]
-  })
+  }).on('after:draw', function (event, data) {
+    var svg = $(this.root[0][0]);
+
+    var xOrigin = $(svg).find('path.x.origin')[0];
+    var xOriginTop = xOrigin.getBoundingClientRect().top;
+
+    var yOrigin = $(svg).find('path.y.origin')[0];
+    var yOriginLeft = yOrigin.getBoundingClientRect().left;
+
+    var xAxisTicks = $(svg).find('g.x.axis .tick text');
+    var yAxisTicks = $(svg).find('g.y.axis .tick text');
+
+    for (var index in xAxisTicks) {
+      var xAxisTick = xAxisTicks[index];
+      if (typeof xAxisTick.getBoundingClientRect == 'function' && xAxisTick.tagName == 'text') {
+        $(xAxisTick).attr('transform', 'translate(0,0)');
+        var tickTop = xAxisTick.getBoundingClientRect().top;
+        var difference = xOriginTop - tickTop;
+        if (difference < -this.meta.height) {
+          difference = -this.meta.height;
+        } else if (difference > 0) {
+          difference = 0;
+        }
+
+        $(xAxisTick).attr('transform', 'translate(0,' + difference + ')');
+      }
+    }
+
+    for (var index in yAxisTicks) {
+      var yAxisTick = yAxisTicks[index];
+      if(yAxisTick.textContent == '0'){
+        $(yAxisTick).css('display','none');
+      } else if (typeof yAxisTick.getBoundingClientRect == 'function' && yAxisTick.tagName == 'text') {
+        $(yAxisTick).attr('transform', 'translate(0,0)');
+        var tickLeft = yAxisTick.getBoundingClientRect().left;
+        var difference = yOriginLeft - tickLeft;
+        if (difference > this.meta.width) {
+          difference = this.meta.width;
+        } else if (difference < 0) {
+          difference = 0;
+        }
+        $(yAxisTick).attr('transform', 'translate(' + difference + ',0)');
+      }
+    }
+  }).draw();
+
 
   functionPlot({
     target: '#description-sin-exp-x-naive',
     yAxis: {domain: [-4, 4]},
     xAxis: {domain: [-2, 6]},
     tip: {
-      renderer: function () {}
+      renderer: function () {
+      }
     },
     data: [{
       fn: 'sin(exp(x))',
@@ -38,7 +85,8 @@ $(document).on('markupLoaded', function () {
     yAxis: {domain: [-4, 4]},
     xAxis: {domain: [-2, 6]},
     tip: {
-      renderer: function () {}
+      renderer: function () {
+      }
     },
     data: [{
       fn: 'sin(exp(x))'
@@ -112,14 +160,14 @@ $(document).on('markupLoaded', function () {
     target: '#grid',
     xAxis: {
       label: 'real'
-    }, 
+    },
     yAxis: {
-      label: 'imaginary' 
+      label: 'imaginary'
     },
     grid: true,
     data: [
-      { fn: 'sqrt(1 - x * x)' },
-      { fn: '-sqrt(1 - x * x)' }
+      {fn: 'sqrt(1 - x * x)'},
+      {fn: '-sqrt(1 - x * x)'}
     ]
   })
 
@@ -221,9 +269,14 @@ $(document).on('markupLoaded', function () {
     target: '#closed',
     xAxis: {domain: [-2, 12]},
     data: [{
-      fn: '3 + sin(x)',
+      fn: '1',
       range: [2, 8],
-      closed: true
+      closed: -100
+    },{
+      fn: '2',
+      range: [1, 5],
+      closed: -100,
+      color: 'green'
     }]
   })
 
@@ -231,7 +284,7 @@ $(document).on('markupLoaded', function () {
    * ### Logarithmic scales
    *
    * The type of each axis can be configured to be logarithmic by specifying the
-   * type of axis to `log` inside the  `xAxis` option, note how this 
+   * type of axis to `log` inside the  `xAxis` option, note how this
    * change affects the way the functions are sampled
    */
   var instance = functionPlot({
@@ -241,7 +294,7 @@ $(document).on('markupLoaded', function () {
       domain: [0.01, 1]
     },
     yAxis: {
-      domain: [-100, 100] 
+      domain: [-100, 100]
     },
     grid: true,
     data: [{
@@ -265,11 +318,11 @@ $(document).on('markupLoaded', function () {
   functionPlot({
     target: '#multiple',
     data: [
-      { fn: 'x', color: 'pink' },
-      { fn: '-x' },
-      { fn: 'x * x' },
-      { fn: 'x * x * x' },
-      { fn: 'x * x * x * x' }
+      {fn: 'x', color: 'pink'},
+      {fn: '-x'},
+      {fn: 'x * x'},
+      {fn: 'x * x * x'},
+      {fn: 'x * x * x * x'}
     ]
   })
 
@@ -327,14 +380,14 @@ $(document).on('markupLoaded', function () {
     },
     yDomain: [-1, 9],
     data: [
-      { fn: 'x^2' },
+      {fn: 'x^2'},
       {
         fn: 'x',
         skipTip: true
       }
     ]
   })
-  
+
   /**
    * ### nth-root
    *
@@ -373,9 +426,9 @@ $(document).on('markupLoaded', function () {
     data: [{
       fn: 'x^2',
       secants: [
-        { x0: 1, x1: 3 },
-        { x0: 1, x1: 2.5 },
-        { x0: 1, x1: 2 }
+        {x0: 1, x1: 3},
+        {x0: 1, x1: 2.5},
+        {x0: 1, x1: 2}
       ]
     }]
   })
@@ -484,13 +537,13 @@ $(document).on('markupLoaded', function () {
     target: '#linked-a',
     height: 250,
     xAxis: {domain: [-10, 10]},
-    data: [{ fn: 'x * x' }]
+    data: [{fn: 'x * x'}]
   })
   b = functionPlot({
     target: '#linked-b',
     height: 250,
     xAxis: {domain: [-10, 10]},
-    data: [{ fn: '2 * x' }]
+    data: [{fn: '2 * x'}]
   })
   a.addLink(b)
 
@@ -510,19 +563,19 @@ $(document).on('markupLoaded', function () {
     target: '#linked-a-multiple',
     height: 250,
     xAxis: {domain: [-10, 10]},
-    data: [{ fn: 'x * x' }]
+    data: [{fn: 'x * x'}]
   })
   b = functionPlot({
     target: '#linked-b-multiple',
     height: 250,
     xAxis: {domain: [-10, 10]},
-    data: [{ fn: '2 * x' }]
+    data: [{fn: '2 * x'}]
   })
   c = functionPlot({
     target: '#linked-c-multiple',
     height: 250,
     xAxis: {domain: [-10, 10]},
-    data: [{ fn: '2' }]
+    data: [{fn: '2'}]
   })
   a.addLink(b, c)
   b.addLink(a, c)
@@ -564,7 +617,7 @@ $(document).on('markupLoaded', function () {
       // update the function to be y = x
       delete options.title;
       delete options.tip;
-      options.data[0] =  {
+      options.data[0] = {
         fn: 'x'
       }
     }
@@ -635,8 +688,8 @@ $(document).on('markupLoaded', function () {
     yAxis: {domain: [-1.897959183, 1.897959183]},
     xAxis: {domain: [-3, 3]},
     data: [
-      { fn: 'sqrt(1 - x * x)' },
-      { fn: '-sqrt(1 - x * x)' }
+      {fn: 'sqrt(1 - x * x)'},
+      {fn: '-sqrt(1 - x * x)'}
     ]
   })
 
@@ -1000,7 +1053,7 @@ $(document).on('markupLoaded', function () {
    *      // n
    *      functionPlot({
    *        data: [{
-   *          fn: 'x^2' 
+   *          fn: 'x^2'
    *        }]
    *      })
    *
@@ -1014,11 +1067,11 @@ $(document).on('markupLoaded', function () {
    *
    * if you want to use any other plotter your function is expected to return a
    * single value (commonly used)
-   * 
+   *
    * if you want to use the interval arithmetic plotter your function is
    * expected to return an object with the properties hi, lo (rarely used unless
    * you want to make computations with an interval arithmetic library)
-   * 
+   *
    */
   functionPlot({
     target: '#built-in-eval-function',

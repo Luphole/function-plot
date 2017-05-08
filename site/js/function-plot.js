@@ -180,10 +180,10 @@ module.exports = function (chart) {
         var y = points[i][1]
         var yLo = y.lo
         var yHi = y.hi
-        // if options.closed is set to true then one of the bounds must be zero or the closed value
+        // if options.closed is set to true then one of the bounds must be zero
         if (closed) {
-          yLo = Math.min(yLo, closed===true?0:closed)
-          yHi = Math.max(yHi, closed===true?0:closed)
+          yLo = Math.min(yLo, 0)
+          yHi = Math.max(yHi, 0)
         }
         // points.scaledDX is added because of the stroke-width
         var moveX = xScale(x.lo) + points.scaledDx / 2
@@ -802,14 +802,10 @@ module.exports = function (options) {
   var zoomBehavior
   var xScale, yScale
   var line = d3.svg.line()
-    .x(function (d) {
-      return xScale(d[0])
-    })
-    .y(function (d) {
-      return yScale(d[1])
-    })
+    .x(function (d) { return xScale(d[0]) })
+    .y(function (d) { return yScale(d[1]) })
 
-  function Chart() {
+  function Chart () {
     var n = Math.random()
     var letter = String.fromCharCode(Math.floor(n * 26) + 97)
     this.id = options.id = letter + n.toString(16).substr(2)
@@ -851,7 +847,7 @@ module.exports = function (options) {
       }
     }
 
-    function computeYScale(xScale) {
+    function computeYScale (xScale) {
       // assumes that xScale is a linear scale
       var xDiff = xScale[1] - xScale[0]
       return height * xDiff / width
@@ -962,7 +958,7 @@ module.exports = function (options) {
     this.draw()
 
     // helper to detect the closest fn to the cursor's current abscissa
-    var tip = this.tip = mousetip(extend(options.tip, {owner: this}))
+    var tip = this.tip = mousetip(extend(options.tip, { owner: this }))
     this.canvas
       .call(tip)
 
@@ -1011,16 +1007,14 @@ module.exports = function (options) {
     this.meta.zoomBehavior
       .x(xScale)
       .y(yScale)
-      .on('zoom', function onZoom() {
+      .on('zoom', function onZoom () {
         self.emit('all:zoom', d3.event.translate, d3.event.scale)
       })
 
     // enter
     var canvas = this.canvas = this.root
       .selectAll('.canvas')
-      .data(function (d) {
-        return [d]
-      })
+      .data(function (d) { return [d] })
 
     this.canvas.enter = canvas.enter()
       .append('g')
@@ -1093,9 +1087,7 @@ module.exports = function (options) {
     xLabel
       .attr('x', width)
       .attr('y', height - 6)
-      .text(function (d) {
-        return d
-      })
+      .text(function (d) { return d })
     xLabel.exit().remove()
 
     yLabel = canvas.selectAll('text.y.axis-label')
@@ -1110,9 +1102,7 @@ module.exports = function (options) {
       .attr('text-anchor', 'end')
       .attr('transform', 'rotate(-90)')
     yLabel
-      .text(function (d) {
-        return d
-      })
+      .text(function (d) { return d })
     yLabel.exit().remove()
   }
 
@@ -1139,28 +1129,23 @@ module.exports = function (options) {
             'wheel' : 'ononmousewheel' in document ?
             'mousewheel' :
             'MozMousePixelScroll')
-        ].map(function (d) {
-          return d + '.zoom'
-        })
+        ].map(function (d) { return d + '.zoom' })
         if (!el._zoomListenersCache) {
           listeners.forEach(function (l) {
             el['_' + l] = el.on(l)
           })
           el._zoomListenersCache = true
         }
-        function setState(state) {
+        function setState (state) {
           listeners.forEach(function (l) {
             state ? el.on(l, el['_' + l]) : el.on(l, null)
           })
         }
-
         setState(!options.disableZoom)
       })
 
     var content = this.content = canvas.selectAll(':scope > g.content')
-      .data(function (d) {
-        return [d]
-      })
+      .data(function (d) { return [d] })
 
     // g tag clipped to hold the data
     content.enter()
@@ -1171,26 +1156,19 @@ module.exports = function (options) {
     // helper line, x = 0
     if (options.xAxis.type === 'linear') {
       var yOrigin = content.selectAll(':scope > path.y.origin')
-        .data([[[0, yScale.domain()[0]], [0, yScale.domain()[1]]]])
+      .data([ [[0, yScale.domain()[0]], [0, yScale.domain()[1]]] ])
       yOrigin.enter()
-        .append('path')
-        .attr('class', 'y origin')
-        .attr('stroke', 'black')
-        .attr('opacity', 0.2)
+      .append('path')
+      .attr('class', 'y origin')
+      .attr('stroke', 'black')
+      .attr('opacity', 0.2)
       yOrigin.attr('d', line)
-
-      yOrigin.enter()
-        .append("path")
-        .attr("transform", "translate(100,"+yScale.domain()[1]+")")
-        .attr('class', 'rocks')
-        .attr("d", d3.svg.symbol().type("triangle-down"))
     }
-
 
     // helper line y = 0
     if (options.yAxis.type === 'linear') {
       var xOrigin = content.selectAll(':scope > path.x.origin')
-        .data([[[xScale.domain()[0], 0], [xScale.domain()[1], 0]]])
+        .data([ [[xScale.domain()[0], 0], [xScale.domain()[1], 0]] ])
       xOrigin.enter()
         .append('path')
         .attr('class', 'x origin')
@@ -1201,7 +1179,7 @@ module.exports = function (options) {
 
     // annotations
     content
-      .call(annotations({owner: self}))
+      .call(annotations({ owner: self }))
 
     // content construction
     // - join options.data to <g class='graph'> elements
