@@ -291,7 +291,7 @@ module.exports = function (chart) {
           var pathD
           if (d.closed) {
             path.attr('fill', color)
-            path.attr('fill-opacity', 0.3)
+            path.attr('fill-opacity', 0.2)
             pathD = area
           } else {
             path.attr('fill', 'none')
@@ -329,7 +329,7 @@ module.exports = function (chart) {
   var xScale = chart.meta.xScale
   var yScale = chart.meta.yScale
 
-  function scatter (selection) {
+  function scatter(selection) {
     selection.each(function (d) {
       var i, j
       var index = d.index
@@ -352,13 +352,26 @@ module.exports = function (chart) {
         .append('circle')
 
       innerSelection
-        .attr('fill', d3.hsl(color.toString()).brighter(1.5))
-        .attr('stroke', color)
+        .attr('fill', d.color2 || d3.hsl(color.toString()).brighter(1.5))
+        .attr('stroke', d.color || color)
         .attr('opacity', 0.7)
-        .attr('r', 1)
-        .attr('cx', function (d) { return xScale(d[0]) })
-        .attr('cy', function (d) { return yScale(d[1]) })
+        .attr('r', d.circleSize || 1)
+        .attr('cx', function (d) {
+          return xScale(d[0])
+        })
+        .attr('cy', function (d) {
+          return yScale(d[1])
+        })
         .attr(d.attr)
+
+      if (d.attachedImage) {
+        innerSelection.attr('class', 'circle-with-image');
+        innerSelection.attr('attached-image', d.attachedImage);
+        innerSelection.attr('attached-image-corner', d.attachedImageCorner);
+        innerSelection.attr('attached-image-width', d.attachedImageWidth);
+        innerSelection.attr('attached-image-height', d.attachedImageHeight);
+        innerSelection.attr('attached-image-id', Date.now());
+      }
 
       innerSelection.exit().remove()
     })
@@ -1181,7 +1194,7 @@ module.exports = function (options) {
 
       yOrigin.enter()
         .append("path")
-        .attr("transform", "translate(0,0)")
+        .attr("transform", "translate(-10,-10)")
         .attr('class', 'y arrow')
         .attr("d", d3.svg.symbol().type("triangle-up"))
     }
@@ -1198,11 +1211,13 @@ module.exports = function (options) {
         .attr('opacity', 0.2)
       xOrigin.attr('d', line)
 
+
       xOrigin.enter()
         .append("path")
-        .attr("transform", "translate(0,0)")
+        .attr("transform", "translate(-10,-10)")
         .attr('class', 'x arrow')
         .attr("d", d3.svg.symbol().type("triangle-up"))
+
     }
 
     // annotations

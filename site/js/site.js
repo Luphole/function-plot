@@ -908,7 +908,14 @@ $(document).on('markupLoaded', function () {
         [1, 1]
       ],
       fnType: 'points',
-      graphType: 'scatter'
+      graphType: 'scatter',
+      color: 'red',
+      color2: 'white',
+      circleSize : 5,
+      attachedImage : 'http://lorempixel.com/400/200',
+      attachedImageCorner : 1,//1=top left,2=top right,3=bottom right,4=bottom left
+      attachedImageWidth: 100,
+      attachedImageHeight: 100
     }]
   })
   functionPlot({
