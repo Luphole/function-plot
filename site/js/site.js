@@ -12,7 +12,9 @@ $(document).on('markupLoaded', function () {
       fn: 'sin(x)',
       range: [-2 * Math.PI, 2 * Math.PI]
     }]
-  }).on('after:draw', function (event, data) {
+  }).on('after:draw', afterDraw).draw();
+
+  function afterDraw(event, data) {
     var svg = $(this.root[0][0]);
 
     var xOrigin = $(svg).find('path.x.origin')[0];
@@ -42,6 +44,43 @@ $(document).on('markupLoaded', function () {
 
     $(yArrow).attr('transform', 'translate(' + (yArrowRightDiff + 6) + ',' + yArrowTopDiff + ')');
     $(xArrow).attr('transform', 'translate(' + xArrowRightDiff + ',' + (xArrowTopDiff - 6) + ') rotate(90)');
+
+    $(svg).find('.circle-with-image').each(function (index, circle) {
+      $(circle).attr('attached-image-id', $(circle).attr('attached-image-id') || (Date.now() + '-' + Math.round(Math.random() * 100)));
+      console.log(circle)
+      var image = $('.image-' + $(circle).attr('attached-image-id'));
+
+      var width = $(circle).attr('attached-image-width');
+      var height = $(circle).attr('attached-image-height');
+      if (!image.length) {//Insert image
+        // alert('add image');
+        image = window.d3.select(circle.parentNode).append("svg:image");
+        image
+          .attr('width', width)
+          .attr('height', height)
+          .attr("xlink:href", $(circle).attr('attached-image'))
+          .attr('transform', 'translate(0,0)')
+          .attr('class', 'attached-image')
+          .attr('class', 'image-' + $(circle).attr('attached-image-id'))
+      }
+
+      //position image
+      image.attr('transform', 'translate(0,0)');
+      var corner = $(circle).attr('attached-image-corner');
+      if (corner == 1) {
+        image.attr('transform', 'translate(' + $(circle).attr("cx") + ',' + $(circle).attr("cy") + ')')
+      }
+      if (corner == 2) {
+        image.attr('transform', 'translate(' + $(circle).attr("cx") - width + ',' + $(circle).attr("cy") + ')')
+      }
+      if (corner == 3) {
+        image.attr('transform', 'translate(' + $(circle).attr("cx") - width + ',' + $(circle).attr("cy") - height + ')')
+      }
+      if (corner == 4) {
+        image.attr('transform', 'translate(' + $(circle).attr("cx") + ',' + $(circle).attr("cy") - height + ')')
+      }
+
+    });
 
     for (var index in xAxisTicks) {
       var xAxisTick = xAxisTicks[index];
@@ -75,7 +114,7 @@ $(document).on('markupLoaded', function () {
         $(yAxisTick).attr('transform', 'translate(' + difference + ',0)');
       }
     }
-  }).draw();
+  }
 
 
   functionPlot({
@@ -636,7 +675,7 @@ $(document).on('markupLoaded', function () {
     }
     functionPlot(options)
   })
-  // initial plot
+// initial plot
   functionPlot(options)
 
   /**
@@ -902,22 +941,19 @@ $(document).on('markupLoaded', function () {
     data: [{
       points: [
         [1, 1],
-        [2, 1],
-        [2, 2],
-        [1, 2],
-        [1, 1]
+        [3, 3]
       ],
       fnType: 'points',
       graphType: 'scatter',
       color: 'red',
       color2: 'white',
-      circleSize : 5,
-      attachedImage : 'http://lorempixel.com/400/200',
-      attachedImageCorner : 1,//1=top left,2=top right,3=bottom right,4=bottom left
-      attachedImageWidth: 100,
-      attachedImageHeight: 100
+      circleSize: 5,
+      attachedImage: 'http://lorempixel.com/100/100',
+      attachedImageCorner: 1,//1=top left,2=top right,3=bottom right,4=bottom left
+      attachedImageWidth: 25,
+      attachedImageHeight: 25
     }]
-  })
+  }).on('after:draw', afterDraw).draw();
   functionPlot({
     target: '#polyline',
     data: [{
