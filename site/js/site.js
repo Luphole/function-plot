@@ -47,7 +47,7 @@ $(document).on('markupLoaded', function () {
 
     $(svg).find('.circle-with-image').each(function (index, circle) {
       $(circle).attr('attached-image-id', $(circle).attr('attached-image-id') || (Date.now() + '-' + Math.round(Math.random() * 100)));
-      console.log(circle)
+
       var image = $('.image-' + $(circle).attr('attached-image-id'));
 
       var width = $(circle).attr('attached-image-width');
