@@ -67,19 +67,28 @@ $(document).on('markupLoaded', function () {
       //position image
       image.attr('transform', 'translate(0,0)');
       var corner = $(circle).attr('attached-image-corner');
+
       if (corner == 1) {
-        image.attr('transform', 'translate(' + $(circle).attr("cx") + ',' + $(circle).attr("cy") + ')')
+        var dx = $(circle).attr("cx");
+        var dy = $(circle).attr("cy");
+        image.attr('transform', 'translate(' + dx + ',' + dy + ')')
       }
       if (corner == 2) {
-        image.attr('transform', 'translate(' + $(circle).attr("cx") - width + ',' + $(circle).attr("cy") + ')')
+        var dx = $(circle).attr("cx") - width;
+        var dy = $(circle).attr("cy");
+        image.attr('transform', 'translate(' + dx + ',' + dy + ')')
       }
       if (corner == 3) {
-        image.attr('transform', 'translate(' + $(circle).attr("cx") - width + ',' + $(circle).attr("cy") - height + ')')
+        var dx = $(circle).attr("cx") - width;
+        var dy = $(circle).attr("cy") - height;
+        image.attr('transform', 'translate(' + dx + ',' + dy + ')')
       }
       if (corner == 4) {
-        image.attr('transform', 'translate(' + $(circle).attr("cx") + ',' + $(circle).attr("cy") - height + ')')
+        var dx = $(circle).attr("cx");
+        var dy = $(circle).attr("cy") - height;
+        image.attr('transform', 'translate(' + dx + ',' + dy + ')')
       }
-
+      console.log(corner,width,height,dx,dy);
     });
 
     for (var index in xAxisTicks) {
