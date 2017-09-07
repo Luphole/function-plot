@@ -332,11 +332,12 @@ $(document).on('markupLoaded', function () {
     data: [{
       fn: '1',
       range: [2, 8],
-      closed: -100
+      closed: true
     }, {
       fn: '2',
       range: [1, 5],
-      closed: -100,
+      closed: true,
+      closedY: 100,
       color: 'green'
     }]
   })
