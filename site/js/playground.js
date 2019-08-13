@@ -49,10 +49,7 @@ functionPlot({
       "color": "#000",
       "secants": [],
       "skipTip": false,
-      "range": [
-        "-0.001",
-        "10"
-      ],
+
       "derivative": {
         "fn": "2x",
         "updateOnMouseMove": true,
