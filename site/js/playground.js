@@ -9,11 +9,90 @@
 
 functionPlot({
   target: '#playground',
-  // yAxis: { invert: true, },
-  // xAxis: { invert: true, },
+  "xAxis": {
+    "domain": [
+      -10,
+      10
+    ],
+    "type": "linear",
+    "label": "x"
+  },
+  "yAxis": {
+    "domain": [
+      -10,
+      10
+    ],
+    "type": "linear",
+    "label": "y"
+  },
   data: [
-    { fn: '2^x', sampler: 'builtIn', graphType: 'polyline'}
-  ]
+    {
+      "fnType": "linear",
+      "graphType": "polyline",
+      "color": "#000",
+      "secants": [],
+      "skipTip": false,
+      "range": [
+        "-10",
+        "0.001"
+      ],
+      "derivative": {
+        "fn": "2x",
+        "x0": "0",
+        "updateOnMouseMove": true
+      },
+      "fn": "x^2"
+    },
+    {
+      "fnType": "linear",
+      "graphType": "polyline",
+      "color": "#000",
+      "secants": [],
+      "skipTip": false,
+      "range": [
+        "-0.001",
+        "10"
+      ],
+      "derivative": {
+        "fn": "2x",
+        "updateOnMouseMove": true,
+        "x0": "0"
+      },
+      "fn": "x^2-3"
+    },
+    {
+      "fnType": "points",
+      "graphType": "scatter",
+      "color": "#fff",
+      "secants": [],
+      "skipTip": true,
+      "points": [
+        [
+          "0",
+          "0"
+        ]
+      ],
+      "color2": "#000",
+      "range": [],
+      "circleSize": "4"
+    },
+    {
+      "fnType": "points",
+      "graphType": "scatter",
+      "color": "#0f0000",
+      "secants": [],
+      "skipTip": true,
+      "points": [
+        [
+          "0",
+          "-3"
+        ]
+      ],
+      "color2": "#f2eded",
+      "range": [],
+      "circleSize": "4"
+    }
+  ],
 })
 
 // functionPlot({

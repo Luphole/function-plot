@@ -46,14 +46,14 @@
   target: '#grid',
   xAxis: {
     label: 'real'
-  }, 
+  },
   yAxis: {
-    label: 'imaginary' 
+    label: 'imaginary'
   },
   grid: true,
   data: [
-    { fn: 'sqrt(1 - x * x)' },
-    { fn: '-sqrt(1 - x * x)' }
+    {fn: 'sqrt(1 - x * x)'},
+    {fn: '-sqrt(1 - x * x)'}
   ]
 })</code></pre></div></div><div class="col-md-6 center-block demos"><span id="grid" class="graph"></span></div></div></div></div><div class="example"><div class="container"><div class="row"><div class="col-md-6"><div class="comment"><h3>Domain</h3>
 <p>The domains of both axes can be changed with the following configurations:</p><ul>
@@ -68,7 +68,7 @@
     fn: 'sin(x)'
   }]
 })</code></pre></div></div><div class="col-md-6 center-block demos"><span id="domain" class="graph"></span></div></div></div></div><div class="example"><div class="container"><div class="row"><div class="col-md-6"><div class="comment"><h3>Number of samples</h3>
-<p><code>nSamples</code> determine the number of equally spaced points in which the function will be evaluated in the current domain, increasing it will more accurately represent the function using rectangles at the cost of processing speed</p><p>e.g.  nSamples = 100</p><p>$$ domain = [-5, 5] \\ values = -5, -4.9, -4.8, \ldots, 4.8, 4.9, 5.0 $$</p><p>$$ domain = [-10, 10] \\ values = -10, -9.8, -9.6, \ldots, 9.6, 9.8, 10 $$</p></div><div class="code"><pre><code class="javascript">functionPlot({
+<p><code>nSamples</code> determine the number of equally spaced points in which the function will be evaluated in the current domain, increasing it will more accurately represent the function using rectangles at the cost of processing speed</p><p>e.g.  nSamples = 100</p><p>$$ domain = [-5, 5] \ values = -5, -4.9, -4.8, \ldots, 4.8, 4.9, 5.0 $$</p><p>$$ domain = [-10, 10] \ values = -10, -9.8, -9.6, \ldots, 9.6, 9.8, 10 $$</p></div><div class="code"><pre><code class="javascript">functionPlot({
   target: '#samples',
   data: [{
     fn: 'sin(x)',
@@ -104,9 +104,15 @@
   target: '#closed',
   xAxis: {domain: [-2, 12]},
   data: [{
-    fn: '3 + sin(x)',
+    fn: '1',
     range: [2, 8],
     closed: true
+  }, {
+    fn: '2',
+    range: [1, 5],
+    closed: true,
+    closedY: 100,
+    color: 'green'
   }]
 })</code></pre></div></div><div class="col-md-6 center-block demos"><span id="closed" class="graph"></span></div></div></div></div><div class="example"><div class="container"><div class="row"><div class="col-md-6"><div class="comment"><h3>Logarithmic scales</h3>
 <p>The type of each axis can be configured to be logarithmic by specifying the type of axis to <code>log</code> inside the  <code>xAxis</code> option, note how this change affects the way the functions are sampled</p></div><div class="code"><pre><code class="javascript">var instance = functionPlot({
@@ -116,7 +122,7 @@
     domain: [0.01, 1]
   },
   yAxis: {
-    domain: [-100, 100] 
+    domain: [-100, 100]
   },
   grid: true,
   data: [{
@@ -128,11 +134,11 @@
 <p><code>data</code> as seen in the examples above is an array, which means that multiple functions can be rendered in the same graph</p><p>You can also change the color of each graph, by default the colors are set from <code>functionPlot.globals.COLORS</code> but you can override the color by setting the <code>color</code> option in each datum</p></div><div class="code"><pre><code class="javascript">functionPlot({
   target: '#multiple',
   data: [
-    { fn: 'x', color: 'pink' },
-    { fn: '-x' },
-    { fn: 'x * x' },
-    { fn: 'x * x * x' },
-    { fn: 'x * x * x * x' }
+    {fn: 'x', color: 'pink'},
+    {fn: '-x'},
+    {fn: 'x * x'},
+    {fn: 'x * x * x'},
+    {fn: 'x * x * x * x'}
   ]
 })</code></pre></div></div><div class="col-md-6 center-block demos"><span id="multiple" class="graph"></span></div></div></div></div><div class="example"><div class="container"><div class="row"><div class="col-md-6"><div class="comment"><h3>Graph types</h3>
 <p>There are three ways to represent a function in <code>function-plot</code></p><ul>
@@ -170,7 +176,7 @@
   },
   yDomain: [-1, 9],
   data: [
-    { fn: 'x^2' },
+    {fn: 'x^2'},
     {
       fn: 'x',
       skipTip: true
@@ -195,9 +201,9 @@
   data: [{
     fn: 'x^2',
     secants: [
-      { x0: 1, x1: 3 },
-      { x0: 1, x1: 2.5 },
-      { x0: 1, x1: 2 }
+      {x0: 1, x1: 3},
+      {x0: 1, x1: 2.5},
+      {x0: 1, x1: 2}
     ]
   }]
 })</code></pre></div></div><div class="col-md-6 center-block demos"><span id="secant" class="graph"></span></div></div></div></div><div class="example"><div class="container"><div class="row"><div class="col-md-6"><div class="comment"><h3>Secants <br> <div class="small">Dynamic secant lines</div></h3>
@@ -262,13 +268,13 @@
   target: '#linked-a',
   height: 250,
   xAxis: {domain: [-10, 10]},
-  data: [{ fn: 'x * x' }]
+  data: [{fn: 'x * x'}]
 })
 b = functionPlot({
   target: '#linked-b',
   height: 250,
   xAxis: {domain: [-10, 10]},
-  data: [{ fn: '2 * x' }]
+  data: [{fn: '2 * x'}]
 })
 a.addLink(b)</code></pre></div></div><div class="col-md-6 center-block demos"><span id="linked-a" class="graph"></span><span id="linked-b" class="graph"></span></div></div></div></div><div class="example"><div class="container"><div class="row"><div class="col-md-6"><div class="comment"><h3>Linked graphs <div class="small">Multiple</div></h3>
 <p>Since the <code>zoom</code> event is dispatched to all the linked graphs, one can set as many linked graphs as wanted and all of them will perform the same zoom operation, in the following example these functions are plotted:</p><ul>
@@ -280,19 +286,19 @@ a.addLink(b)</code></pre></div></div><div class="col-md-6 center-block demos"><s
   target: '#linked-a-multiple',
   height: 250,
   xAxis: {domain: [-10, 10]},
-  data: [{ fn: 'x * x' }]
+  data: [{fn: 'x * x'}]
 })
 b = functionPlot({
   target: '#linked-b-multiple',
   height: 250,
   xAxis: {domain: [-10, 10]},
-  data: [{ fn: '2 * x' }]
+  data: [{fn: '2 * x'}]
 })
 c = functionPlot({
   target: '#linked-c-multiple',
   height: 250,
   xAxis: {domain: [-10, 10]},
-  data: [{ fn: '2' }]
+  data: [{fn: '2'}]
 })
 a.addLink(b, c)
 b.addLink(a, c)
@@ -323,7 +329,7 @@ $('#update').click(function () {
     // update the function to be y = x
     delete options.title;
     delete options.tip;
-    options.data[0] =  {
+    options.data[0] = {
       fn: 'x'
     }
   }
@@ -357,8 +363,8 @@ functionPlot(options)</code></pre></div></div><div class="col-md-6 center-block 
   yAxis: {domain: [-1.897959183, 1.897959183]},
   xAxis: {domain: [-3, 3]},
   data: [
-    { fn: 'sqrt(1 - x * x)' },
-    { fn: '-sqrt(1 - x * x)' }
+    {fn: 'sqrt(1 - x * x)'},
+    {fn: '-sqrt(1 - x * x)'}
   ]
 })</code></pre></div></div><div class="col-md-6 center-block demos"><span id="circle-explicit" class="graph"></span></div></div></div></div><div class="example"><div class="container"><div class="row"><div class="col-md-6"><div class="comment"><h3>Parametric equations</h3>
 <p>The original equation of the circle $x^2 + y^2 = 1$ can be parametrized as</p><p>$$ x = cos(t) \\ y = sin(t) $$</p><p>For $0 \leq t \leq 2 \pi$</p><p>The options that tell <code>function-plot</code> to render a parametric equation are defined inside each term of the <code>data</code> array and need to have the following properties set:</p><ul>
@@ -390,7 +396,7 @@ functionPlot(options)</code></pre></div></div><div class="col-md-6 center-block 
     graphType: 'polyline'
   }]
 })</code></pre></div></div><div class="col-md-6 center-block demos"><span id="butterfly-curve" class="graph"></span></div></div></div></div><div class="example"><div class="container"><div class="row"><div class="col-md-6"><div class="comment"><h3>Polar equations</h3>
-<p>The original equation of the circle $x^2 + y^2 = 1$ can be expressed with the following polar equation</p><p>$$ r = r_0 \; cos(\theta - \gamma) + \sqrt{a^2 -r_0^2 sin^2(\theta - \gamma)} $$</p><p>Where $\theta$ is the polar angle, $a$ is the radius of the circle with center $(r_0, \gamma)$</p><p>The options that tell <code>function-plot</code> to render a polar equation are defined inside each term of the <code>data</code> array and need to have the following properties set:</p><ul>
+<p>The original equation of the circle $x^2 + y^2 = 1$ can be expressed with the following polar equation</p><p>$$ r = r_0 ; cos(\theta - \gamma) + \sqrt{a^2 -r_0^2 sin^2(\theta - \gamma)} $$</p><p>Where $\theta$ is the polar angle, $a$ is the radius of the circle with center $(r_0, \gamma)$</p><p>The options that tell <code>function-plot</code> to render a polar equation are defined inside each term of the <code>data</code> array and need to have the following properties set:</p><ul>
 <li><code>fnType: &#39;polar&#39;</code> to tell function plot to render a polar equation</li>
 <li><code>r</code> a polar equation in terms of <code>theta</code></li>
 <li><code>range = [-Math.PI, Math.PI]</code> the <code>range</code> property in polar equations is used to determine the possible values of <code>theta</code>, remember that the number of samples is set in the property <code>samples</code></li>
@@ -452,15 +458,19 @@ functionPlot(options)</code></pre></div></div><div class="col-md-6 center-block 
   data: [{
     points: [
       [1, 1],
-      [2, 1],
-      [2, 2],
-      [1, 2],
-      [1, 1]
+      [3, 3]
     ],
     fnType: 'points',
-    graphType: 'scatter'
+    graphType: 'scatter',
+    color: 'red',
+    color2: 'white',
+    circleSize: 5,
+    attachedImage: 'http://lorempixel.com/100/100',
+    attachedImageCorner: 1,//1=top left,2=top right,3=bottom right,4=bottom left
+    attachedImageWidth: 25,
+    attachedImageHeight: 25
   }]
-})
+}).on('after:draw', afterDraw).draw();
 functionPlot({
   target: '#polyline',
   data: [{
@@ -537,8 +547,7 @@ functionPlot({
 instance.on('definite-integral', function (datum, i, value, a, b) {
   console.log(value, a, b)
 })</code></pre></div></div><div class="col-md-6 center-block demos"><span id="playground" class="graph"></span></div></div></div></div><div class="example"><div class="container"><div class="row"><div class="col-md-6"><div class="comment"><h3>Advanced: sampler</h3>
-<p><code>function-plot</code> uses interval-arithmetic math by default, unfortunately some functions are not implemented yet because of the underlying complexity, for this reason you can always evaluate a function with <img style="width: 50px; height: 15px" src="img/mathjs_330x100.png"/>, to do so make sure that you include <code>math.js</code> before<code>function-plot</code></p><pre><code class="lang-html">&lt;script src=&quot;//cdnjs.cloudflare.com/ajax/libs/mathjs/1.5.2/math.min.js&quot;&gt;&lt;/script&gt;
-</code></pre>
+<p><code>function-plot</code> uses interval-arithmetic math by default, unfortunately some functions are not implemented yet because of the underlying complexity, for this reason you can always evaluate a function with <img style="width: 50px; height: 15px" src="img/mathjs_330x100.png"/>, to do so make sure that you include <code>math.js</code> before<code>function-plot</code></p><pre><code class="language-html">&lt;script src=&quot;//cdnjs.cloudflare.com/ajax/libs/mathjs/1.5.2/math.min.js&quot;&gt;&lt;/script&gt;</code></pre>
 <p>And then set the following:</p><ul>
 <li><code>sampler: &#39;builtIn&#39;</code> the parser bundled with function-plot will be replaced with the one in math.js</li>
 <li><code>graphType: &#39;polyline&#39;</code> or <code>graphType: &#39;scatter&#39;</code></li>
@@ -564,10 +573,9 @@ functionPlot({
 <p>All of the examples above used a string in the property to evaluate e.g.</p><pre><code> // n
  functionPlot({
    data: [{
-     fn: &#39;x^2&#39; 
+     fn: &#39;x^2&#39;
    }]
- })
-</code></pre><p>You can use a function instead of a string, the input will vary depending on the type of <code>fnType</code></p><p>For any case the input will be a single object and its properties will be the same as the ones the function depends on, e.g. when <code>fnType: &#39;polar&#39;</code> then the function depends on <code>theta</code> so <code>theta</code> will be a property in the input object</p><p>if you want to use any other plotter your function is expected to return a single value (commonly used)</p><p>if you want to use the interval arithmetic plotter your function is expected to return an object with the properties hi, lo (rarely used unless you want to make computations with an interval arithmetic library)</p></div><div class="code"><pre><code class="javascript">functionPlot({
+ })</code></pre><p>You can use a function instead of a string, the input will vary depending on the type of <code>fnType</code></p><p>For any case the input will be a single object and its properties will be the same as the ones the function depends on, e.g. when <code>fnType: &#39;polar&#39;</code> then the function depends on <code>theta</code> so <code>theta</code> will be a property in the input object</p><p>if you want to use any other plotter your function is expected to return a single value (commonly used)</p><p>if you want to use the interval arithmetic plotter your function is expected to return an object with the properties hi, lo (rarely used unless you want to make computations with an interval arithmetic library)</p></div><div class="code"><pre><code class="javascript">functionPlot({
   target: '#built-in-eval-function',
   data: [{
     // force the use of builtIn math
