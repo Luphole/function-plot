@@ -28,13 +28,16 @@ functionPlot({
   data: [
     {
       "fnType": "linear",
-      "graphType": "polyline",
+      "graphType": "interval",
       "color": "#000",
       "secants": [],
       "skipTip": false,
+      closed: true,
+      closedY: -10,
+      closedOpaque: true,
       "range": [
         "-10",
-        "0.001"
+        "0"
       ],
       "derivative": {
         "fn": "2x",
