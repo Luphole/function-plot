@@ -28,12 +28,12 @@ functionPlot({
   data: [
     {
       "fnType": "linear",
-      "graphType": "interval",
+      "graphType": "polyline",
       "color": "#000",
       "secants": [],
       "skipTip": false,
       closed: true,
-      closedY: -10,
+      closedY: 10,
       closedOpaque: true,
       "range": [
         "-10",
